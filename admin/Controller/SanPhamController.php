@@ -1,8 +1,7 @@
 <?php
-
-use function PHPSTORM_META\map;
-
 include_once("Model/SanPham.php");
+include_once("Model/DanhMuc.php"); // Nhớ include cả Model DanhMuc
+
 class SanPhamController
 {
     private $sanPham;
@@ -14,37 +13,57 @@ class SanPhamController
         $this->danhMuc = new DanhMuc();
     }
 
-    // Phương thức list
+    // --- HIỂN THỊ DANH SÁCH ---
     public function index()
     {
+        // Gọi hàm getAll mới đã có đủ thông tin
         $allSanPham = $this->sanPham->getAll();
-        foreach($allSanPham as $key => $item) {
-            $allSanPham[$key]['tendanhmuc'] = $this->danhMuc->getOne($item['iddm'])['name'];
-        }
+        
         include_once("./views/sanpham/list.php");
     }
 
     public function create()
     {
         $allDanhMuc = $this->danhMuc->getAll();
+        // Cần load thêm màu sắc, kích cỡ để hiển thị option chọn (nếu có bảng màu/size riêng)
         include_once("./views/sanpham/create.php");
     }
 
+    // --- THÊM MỚI (STORE) ---
     public function store() {
         if(isset($_POST['ten'])) {
             $ten = $_POST['ten'];
             $gia = $_POST['gia'];
             $moTa = $_POST['mota'];
             $idDanhMuc = $_POST['danhmuc'];
-            if(isset($_FILES['anh'])) {
-                // B1:xem có ảnh gửi đến không
-                // B2: Đặt lại tên ảnh bao gồm cả đường dẫn (Để không trùng khi vào db)
-                $imageName = "image/" . uniqid() . "_" . $_FILES['anh']['name'];
-                move_uploaded_file($_FILES['anh']['tmp_name'], $imageName);
-                var_dump($imageName);
-                $this->sanPham->insert($ten, $gia, $moTa, $idDanhMuc, $imageName); // Gọi function insert ở model.
+            
+            $soLuong = $_POST['so_luong'] ?? 0;
+            $loai = $_POST['loai'] ?? 'Thường'; 
+            $idMauSac = $_POST['id_mau_sac'] ?? 0;
+            $idKichCo = $_POST['id_kich_co'] ?? 0;
+
+            // --- ĐOẠN SỬA LẠI ---
+            $imageName = ""; 
+            if(isset($_FILES['anh']) && $_FILES['anh']['size'] > 0) {
+                // 1. Tạo tên file riêng (không kèm 'image/')
+                $filename = uniqid() . "_" . $_FILES['anh']['name'];
+                
+                // 2. Định nghĩa nơi upload file đến (Thư mục vật lý)
+                // Lưu ý: Code đang chạy tại index.php nên đường dẫn là image/
+                $target_dir = "image/";
+                $target_file = $target_dir . $filename;
+                
+                // 3. Di chuyển file
+                if (move_uploaded_file($_FILES['anh']['tmp_name'], $target_file)){
+                    // 4. CHỈ LƯU TÊN FILE VÀO DATABASE (Quan trọng)
+                    $imageName = $filename; 
+                }
             }
-            header("Location:index.php"); // Điều hướng trở lại trang index
+            // --------------------
+
+            $this->sanPham->insert($ten, $gia, $imageName, $moTa, $idDanhMuc, $soLuong, $loai, $idMauSac, $idKichCo);
+            
+            header("Location:index.php?action=listsanpham"); 
         }
     }
 
@@ -57,24 +76,48 @@ class SanPhamController
         }
     }
 
+    // --- CẬP NHẬT (UPDATE) ---
     public function update() {
-        if(isset($_POST['ten'])) {
+        if(isset($_POST['id'])) { 
             $id = $_POST['id'];
             $ten = $_POST['ten'];
             $gia = $_POST['gia'];
             $moTa = $_POST['mota'];
             $idDanhMuc = $_POST['danhmuc'];
-            $imageName = null;
+            
+            $soLuong = $_POST['so_luong'] ?? 0;
+            $loai = $_POST['loai'] ?? 'Thường';
+            $idMauSac = $_POST['id_mau_sac'] ?? 0;
+            $idKichCo = $_POST['id_kich_co'] ?? 0;
+
+            // --- ĐOẠN SỬA LẠI ---
+            $imageName = ""; 
+            // Lấy lại ảnh cũ trước (để nếu không up ảnh mới thì giữ nguyên)
+            $spCu = $this->sanPham->getOne($id);
+            $imageName = $spCu['hinh_anh']; 
+
             if(isset($_FILES['anh']) && $_FILES['anh']['name'] != '') {
-                $linkAnhSanPham = $this->sanPham->getOne($id)['img'];
-                $imageName = "image/" . uniqid() . "_" . $_FILES['anh']['name'];
-                move_uploaded_file($_FILES['anh']['tmp_name'], $imageName);
-                if(file_exists($linkAnhSanPham)) {
-                    unlink($linkAnhSanPham);
+                // 1. Tạo tên file mới
+                $filename = uniqid() . "_" . $_FILES['anh']['name'];
+                $target_dir = "image/";
+                $target_file = $target_dir . $filename;
+
+                if(move_uploaded_file($_FILES['anh']['tmp_name'], $target_file)){
+                     // 2. Cập nhật tên ảnh mới để lưu vào DB
+                    $imageName = $filename;
+
+                    // 3. Xóa ảnh cũ (Cần thêm đường dẫn image/ vào để unlink tìm thấy file)
+                    $old_file_path = "image/" . $spCu['hinh_anh'];
+                    if($spCu['hinh_anh'] && file_exists($old_file_path)) {
+                        unlink($old_file_path);
+                    }
                 }
             }
-            $this->sanPham->update($id, $ten, $gia, $moTa, $idDanhMuc, $imageName); // Gọi function insert ở model.
-            header("Location:index.php?action=listsanpham"); // Điều hướng trở lại trang index
+            // --------------------
+
+            $this->sanPham->update($id, $ten, $gia, $imageName, $moTa, $idDanhMuc, $soLuong, $loai, $idMauSac, $idKichCo);
+            
+            header("Location:index.php?action=listsanpham");
         }
     }
 
@@ -89,10 +132,9 @@ class SanPhamController
     public function restore() {
         if(isset($_GET['id'])) {
             $id = $_GET['id'];
-            $this->sanPham->restore($id);
+            $this->sanPham->restore($id); // Đã có hàm restore bên Model
             header("Location:index.php?action=listsanpham");
         }
     }
 }
-
 ?>

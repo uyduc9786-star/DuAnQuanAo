@@ -7,14 +7,6 @@ include_once("views/layouts/header.php");
             <div class="col-12 col-md-6 order-md-1 order-last">
                 <h3>Quản lý sản phẩm</h3>
             </div>
-            <div class="col-12 col-md-6 order-md-2 order-first">
-                <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Sản phẩm</li>
-                    </ol>
-                </nav>
-            </div>
         </div>
     </div>
     <section class="section">
@@ -24,42 +16,47 @@ include_once("views/layouts/header.php");
                 <table class="table table-striped" id="table1">
                     <thead>
                         <tr>
-                            <th class="col-1">Id</th>
-                            <th class="col-1">Danh mục</th>
-                            <th class="col-2">Tên sản phẩm</th>
-                            <th class="col-1">Giá sp</th>
-                            <th class="col-2">Ảnh</th>
-                            <th class="col-3">Mô tả</th>
-                            <th class="col-2">Hành động</th>
+                            <th>ID</th>
+                            <th>Tên SP</th>
+                            <th>Danh mục</th>
+                            <th>Ảnh</th>
+                            <th>Giá</th>
+                            <th>Màu</th>   <th>Size</th>  <th>Số lượng</th>
+                            <th>Hành động</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <?php foreach ($allSanPham as $item) { ?>
+                        <?php foreach ($allSanPham as $sp): ?>
+                            <?php extract($sp); ?>
                             <tr>
-                                <td><?= $item['id'] ?></td>
-                                <td><?= $item['tendanhmuc'] ?></td>
-                                <td><?= $item['name'] ?></td>
-                                <td><?= $item['price'] ?></td>
-                                <td><img width="100px" src="./<?= $item['img'] ?>" alt=""></td>
-                                <td><?= $item['mota'] ?></td>
+                                <td><?= $id_sp ?></td>
+                                <td><?= $ten_sp ?></td>
+                                
+                                <td><?= $name_danh_muc ?></td> 
+                                
                                 <td>
-                                    <a href="index.php?action=editsanpham&id=<?= $item['id'] ?>"
-                                        class="btn btn-secondary">Sửa</a>
-                                    <?php if ($item['deleted'] == 0) { ?>
-                                        <a href="index.php?action=deletesanpham&id=<?= $item['id'] ?>"
-                                           onclick="return confirm('Bạn có muốn xóa không?')" class="btn btn-danger">Xóa</a>
-                                    <?php } else { ?>
-                                        <a href="index.php?action=restoresanpham&id=<?= $item['id'] ?>"
-                                           onclick="return confirm('Bạn có muốn khôi phục không?')" class="btn btn-warning">Khôi phục</a>
-                                    <?php } ?>
+                                    <img src="image/<?= $hinh_anh ?>" width="50" alt="Ảnh SP">
+                                </td>
+                                <td><?= number_format($gia_sp) ?> đ</td>
+                                
+                                <td>
+                                    <span class="badge bg-primary"><?= $ten_mau ?? 'Chưa rõ' ?></span>
+                                </td>
+                                <td>
+                                    <span class="badge bg-info"><?= $loai_kich_co ?? 'Chưa rõ' ?></span>
+                                </td>
+
+                                <td><?= $so_luong ?></td>
+                                <td>
+                                    <a href="index.php?action=editsanpham&id=<?= $id_sp ?>" class="btn btn-primary btn-sm">Sửa</a>
+                                    <a href="index.php?action=deletesanpham&id=<?= $id_sp ?>" class="btn btn-danger btn-sm">Xóa</a>
                                 </td>
                             </tr>
-                        <?php } ?>
+                        <?php endforeach; ?>
                     </tbody>
                 </table>
             </div>
         </div>
-
     </section>
 </div>
 <?php

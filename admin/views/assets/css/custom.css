@@ -1,0 +1,129 @@
+/* ========================================================
+   LOGIN PAGE - FASHION GLASSMORPHISM STYLE (Kính mờ thời trang)
+   ======================================================== */
+
+/* 1. Thiết lập ảnh nền toàn màn hình */
+#auth {
+  /* Ảnh nền Fashion tối màu sang trọng */
+  background: url("../images/anhnen.jpg") no-repeat center center fixed;
+  background-size: cover;
+  min-height: 100vh;
+  width: 100%; /* Đảm bảo full chiều rộng */
+  display: flex;
+  align-items: center; /* Căn giữa chiều dọc */
+  justify-content: center; /* Căn giữa chiều ngang */
+  position: relative;
+  padding: 0 !important; /* Xóa padding mặc định nếu có */
+}
+
+/* Lớp phủ đen mờ lên ảnh nền để dễ đọc chữ */
+#auth::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5); /* Độ tối 50% */
+  z-index: 0;
+}
+
+/* 2. Ẩn cột bên phải (Cục xanh cũ) vì không cần nữa */
+#auth .col-lg-7 {
+  display: none !important;
+}
+
+/* 3. CHỈNH LẠI KHUNG CHỨA FORM (QUAN TRỌNG NHẤT) */
+#auth .row {
+  width: 100%;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+  /* Thêm dòng này để ép nó không dãn full màn hình mà co lại vừa với form */
+  height: auto !important;
+  margin: 0 !important; /* Xóa margin thừa của bootstrap row */
+}
+
+#auth .col-lg-5 {
+  flex: 0 0 auto;
+  width: 100%;
+  max-width: 480px; /* Giới hạn chiều rộng form */
+}
+
+/* 4. TẠO HIỆU ỨNG KÍNH MỜ (GLASSMORPHISM) CHO FORM */
+#auth #auth-left {
+  padding: 3rem !important;
+  background: rgba(
+    30,
+    30,
+    45,
+    0.75
+  ) !important; /* Màu nền tối bán trong suốt */
+
+  /* Hiệu ứng mờ (Blur) */
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+
+  border: 1px solid rgba(255, 255, 255, 0.1); /* Viền mỏng tinh tế */
+  border-radius: 20px; /* Bo góc mềm mại */
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); /* Bóng đổ sâu */
+  color: #fff; /* Chuyển chữ sang trắng */
+}
+
+/* 5. Chỉnh màu chữ tiêu đề */
+#auth h1.auth-title {
+  color: #fff !important;
+  font-size: 2.5rem;
+  text-align: center;
+}
+#auth p.auth-subtitle {
+  color: #a2a3b7 !important;
+  text-align: center;
+}
+
+/* 6. Chỉnh ô nhập liệu (Input) cho hợp nền tối */
+.form-group input.form-control {
+  background-color: rgba(0, 0, 0, 0.3) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  color: #fff !important;
+  border-radius: 50px !important;
+  padding-left: 20px;
+}
+.form-group input.form-control:focus {
+  border-color: #ff5722 !important; /* Màu cam thời trang */
+  box-shadow: 0 0 0 4px rgba(255, 87, 34, 0.2);
+}
+
+/* 7. Icon trong input */
+.form-control-icon i {
+  color: #a2a3b7 !important;
+}
+
+/* 8. Nút đăng nhập */
+button.btn-primary {
+  background: linear-gradient(
+    45deg,
+    #ff5722,
+    #ff8a50
+  ) !important; /* Gradient Cam */
+  border: none !important;
+  border-radius: 50px !important;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-top: 20px;
+  box-shadow: 0 4px 15px rgba(255, 87, 34, 0.4);
+}
+button.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(255, 87, 34, 0.6);
+}
+
+/* Chỉnh logo nhỏ lại và căn giữa */
+.auth-logo {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+.auth-logo img {
+  height: 60px !important; /* Chỉnh lại logo cho vừa */
+}

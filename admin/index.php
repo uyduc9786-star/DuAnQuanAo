@@ -1,13 +1,49 @@
 <?php
+session_start(); // BẮT BUỘC PHẢI CÓ DÒNG NÀY Ở ĐẦU TIÊN
+
+// Include các Controller
 include_once("Controller/DanhMucController.php");
 include_once("Controller/SanPhamController.php");
+include_once("Controller/ThongKeController.php");
+include_once("Controller/MauSacController.php");
+include_once("Controller/KichCoController.php");
+include_once("Controller/TaiKhoanController.php"); // Include controller tài khoản
+include_once("Controller/HoaDonController.php");
 
+// Khởi tạo đối tượng
 $danhMuc = new DanhMucController();
 $sanPham = new SanPhamController();
+$thongKe = new ThongKeController();
+$mauSacCtrl = new MauSacController();
+$kichCoCtrl = new KichCoController();
+$taiKhoanCtrl = new TaiKhoanController(); // Khởi tạo controller tài khoản
+$hoaDonCtrl = new HoaDonController();
+
+// --- PHẦN KIỂM TRA ĐĂNG NHẬP (GÁC CỔNG) ---
+// Nếu chưa có Session 'admin_login' thì bắt buộc đăng nhập
+if (!isset($_SESSION['admin_login'])) {
+    // Nếu người dùng đang gửi dữ liệu đăng nhập (action=checklogin) thì cho phép đi tiếp
+    if (isset($_GET['action']) && $_GET['action'] == 'checklogin') {
+        $taiKhoanCtrl->checkLogin();
+    } else {
+        // Còn lại tất cả các trường hợp khác đều bắt hiện form login
+        $taiKhoanCtrl->login();
+    }
+    // Dừng chương trình tại đây, không cho chạy xuống phần switch bên dưới
+    exit(); 
+}
+// ------------------------------------------
+
+// Nếu đã đăng nhập rồi thì chạy Switch này
 if(isset($_GET['action']) && $_GET['action'] != "") {
-$action = $_GET['action'];
+    $action = $_GET['action'];
     switch($action) {
-        //danhmuc
+        // --- CÁC CASE ĐĂNG NHẬP / ĐĂNG XUẤT ---
+        case 'logout':
+            $taiKhoanCtrl->logout();
+            break;
+
+        // --- DANH MỤC ---
         case "listdanhmuc":
             $danhMuc->index();
             break;
@@ -29,6 +65,13 @@ $action = $_GET['action'];
         case "restoredanhmuc":
             $danhMuc->restore();
             break;
+
+        // --- THỐNG KÊ ---
+        case "thongke":
+            $thongKe->index();
+            break;
+
+        // --- SẢN PHẨM ---
         case "listsanpham":
             $sanPham->index();
             break;
@@ -50,9 +93,63 @@ $action = $_GET['action'];
         case "restoresanpham":
             $sanPham->restore();
             break;
+
+        // --- MÀU SẮC ---
+        case 'listmausac':
+            $mauSacCtrl->index();
+            break;
+        case 'createmausac':
+            $mauSacCtrl->create();
+            break;
+        case 'storemausac':
+            $mauSacCtrl->store();
+            break;
+        case 'editmausac':
+            $mauSacCtrl->edit();
+            break;
+        case 'updatemausac':
+            $mauSacCtrl->update();
+            break;
+        case 'deletemausac':
+            $mauSacCtrl->delete();
+            break;
+
+        // --- KÍCH CỠ ---
+        case 'listkichco':
+            $kichCoCtrl->index();
+            break;
+        case 'createkichco':
+            $kichCoCtrl->create();
+            break;
+        case 'storekichco':
+            $kichCoCtrl->store();
+            break;
+        case 'editkichco':
+            $kichCoCtrl->edit();
+            break;
+        case 'updatekichco':
+            $kichCoCtrl->update();
+            break;
+        case 'deletekichco':
+            $kichCoCtrl->delete();
+            break;
+        // ----- Hóa đơn ----
+        case 'listhoadon':
+            $hoaDonCtrl->index();
+            break;
+        case 'hoadon_detail':
+            $hoaDonCtrl->detail();
+            break;
+        case 'update_status':
+            $hoaDonCtrl->update_status();
+            break;
+            
+        default:
+            $danhMuc->index(); // Hoặc trang Dashboard
+            break;
     }
 } else {
+    // Mặc định vào trang danh mục hoặc Dashboard
     $danhMuc->index();
 }
-
 ?>

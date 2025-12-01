@@ -46,19 +46,23 @@ class DanhMucController
         }
     }
 
+    // Hàm xóa
     public function delete() {
         if(isset($_GET['id'])) {
             $id = $_GET['id'];
             $this->danhMuc->delete($id);
-            header("Location:index.php");
+            // Xóa xong quay lại trang list
+            header("Location:index.php?action=listdanhmuc");
         }
     }
 
+    // Hàm khôi phục (Bắt buộc phải có)
     public function restore() {
         if(isset($_GET['id'])) {
             $id = $_GET['id'];
             $this->danhMuc->restore($id);
-            header("Location:index.php");
+            // Khôi phục xong quay lại trang list
+            header("Location:index.php?action=listdanhmuc");
         }
     }
 }
