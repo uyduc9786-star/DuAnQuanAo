@@ -3,10 +3,13 @@ include_once("pdo.php");
 
 class SanPham {
 
-    // 1. Lấy danh sách sản phẩm đang hiển thị (trang_thai = 0)
-    // Lưu ý: Sắp xếp theo id_sp giảm dần để cái mới lên đầu
+    // 1. Lấy danh sách sản phẩm ĐANG HIỆN (trang_thai = 1)
+    // 1. Lấy danh sách sản phẩm ĐANG HIỆN (trang_thai = 1)
     public function getAll() {
-        // Kết nối 4 bảng: SanPham, DanhMuc, MauSac, KichCo
+        // SỬA LẠI TÊN CỘT Ở ĐÂY:
+        // ms.id_mausac (viết liền, không gạch dưới)
+        // kc.id_kichco (viết liền, không gạch dưới)
+        
         $sql = "SELECT sp.*, 
                        dm.name_danh_muc, 
                        ms.ten_mau, 
@@ -15,7 +18,7 @@ class SanPham {
                 LEFT JOIN danh_muc dm ON sp.id_danh_muc = dm.id_danh_muc
                 LEFT JOIN mau_sac ms ON sp.id_mau_sac = ms.id_mausac
                 LEFT JOIN kich_co kc ON sp.id_kich_co = kc.id_kichco
-                WHERE sp.trang_thai = 0
+                WHERE sp.trang_thai = 1 
                 ORDER BY sp.id_sp DESC";
                 
         return pdo_query($sql);
@@ -27,8 +30,9 @@ class SanPham {
         return pdo_query_one($sql, $id);
     }
 
-    // 3. Thêm mới sản phẩm (Cập nhật đủ các cột: Màu, Size, Số lượng, Loại...)
+    // 3. Thêm mới sản phẩm
     public function insert($ten, $gia, $anh, $moTa, $idDanhMuc, $soLuong, $loai, $idMauSac, $idKichCo) {
+        // SỬA: Mặc định thêm vào là trang_thai = 1 (Hiện)
         $sql = "INSERT INTO san_pham (
                     ten_sp, 
                     gia_sp, 
@@ -39,9 +43,9 @@ class SanPham {
                     loai, 
                     id_mau_sac, 
                     id_kich_co, 
-                    trang_thai
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 0)"; 
-        // Mặc định trang_thai = 0 (Hiện)
+                    trang_thai,
+                    luot_xem
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 1, 0)"; 
         
         pdo_execute($sql, $ten, $gia, $anh, $moTa, $idDanhMuc, $soLuong, $loai, $idMauSac, $idKichCo);
     }
@@ -49,7 +53,7 @@ class SanPham {
     // 4. Cập nhật sản phẩm
     public function update($id, $ten, $gia, $anh, $moTa, $idDanhMuc, $soLuong, $loai, $idMauSac, $idKichCo) {
         if($anh != "") {
-            // Trường hợp 1: Có chọn ảnh mới -> Update cả ảnh
+            // Có thay ảnh
             $sql = "UPDATE san_pham SET 
                     ten_sp = ?, 
                     gia_sp = ?, 
@@ -63,7 +67,7 @@ class SanPham {
                     WHERE id_sp = ?";
             pdo_execute($sql, $ten, $gia, $anh, $moTa, $idDanhMuc, $soLuong, $loai, $idMauSac, $idKichCo, $id);
         } else {
-            // Trường hợp 2: Không chọn ảnh mới -> Giữ nguyên ảnh cũ
+            // Không thay ảnh
             $sql = "UPDATE san_pham SET 
                     ten_sp = ?, 
                     gia_sp = ?, 
@@ -78,15 +82,15 @@ class SanPham {
         }
     }
 
-    // 5. Xóa mềm (Ẩn sản phẩm đi, set trang_thai = 1)
+    // 5. Xóa mềm (SỬA: Set trang_thai = 0 để ẩn đi)
     public function delete($id) {
-        $sql = "UPDATE san_pham SET trang_thai = 1 WHERE id_sp = ?";
+        $sql = "UPDATE san_pham SET trang_thai = 0 WHERE id_sp = ?";
         pdo_execute($sql, $id);
     }    
     
-    // 6. Khôi phục sản phẩm
+    // 6. Khôi phục sản phẩm (SỬA: Set trang_thai = 1 để hiện lại)
     public function restore($id) {
-        $sql = "UPDATE san_pham SET trang_thai = 0 WHERE id_sp = ?";
+        $sql = "UPDATE san_pham SET trang_thai = 1 WHERE id_sp = ?";
         pdo_execute($sql, $id);
     }
 }

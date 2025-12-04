@@ -15,10 +15,12 @@ include_once("views/layouts/header.php");
                                 <div class="form-group">
                                     <label for="first-name-vertical">Tên danh mục</label>
                                     <input type="text" id="first-name-vertical" class="form-control" 
-                                    name="ten" value="<?= $danhMuc['name'] ?>">
+                                    name="ten" value="<?= isset($danhMuc['name_danh_muc']) ? $danhMuc['name_danh_muc'] : '' ?>">
                                 </div>
                             </div>
-                            <input type="hidden" name="id" value="<?= $danhMuc['id'] ?>">
+                            
+                            <input type="hidden" name="id" value="<?= isset($danhMuc['id_danh_muc']) ? $danhMuc['id_danh_muc'] : '' ?>">
+                            
                             <div class="col-12 d-flex justify-content-end">
                                 <button type="submit" class="btn btn-primary me-1 mb-1">Sửa</button>
                                 <button type="reset" class="btn btn-light-secondary me-1 mb-1">Làm mới</button>

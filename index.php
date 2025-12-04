@@ -1,150 +1,88 @@
-<?php 
 <?php
-session_start(); // BẮT BUỘC PHẢI CÓ DÒNG NÀY Ở ĐẦU TIÊN
+session_start(); // Bắt buộc phải có để dùng giỏ hàng (lưu thông tin sản phẩm đã chọn)
 
-// Include các Controller
-include_once("Controller/DanhMucController.php");
-include_once("Controller/SanPhamController.php");
-include_once("Controller/ThongKeController.php");
-include_once("Controller/MauSacController.php");
-include_once("Controller/KichCoController.php");
-include_once("Controller/TaiKhoanController.php"); // Include controller tài khoản
-include_once("Contrller/CartController.php");
-// Khởi tạo đối tượng
-$danhMuc = new DanhMucController();
-$sanPham = new SanPhamController();
-$thongKe = new ThongKeController();
-$mauSacCtrl = new MauSacController();
-$kichCoCtrl = new KichCoController();
-$taiKhoanCtrl = new TaiKhoanController(); // Khởi tạo controller tài khoản
+// Nhúng các file Controller để sử dụng
+include_once "Controller/HomeController.php";
+include_once "Controller/CartController.php"; 
 
-// --- PHẦN KIỂM TRA ĐĂNG NHẬP (GÁC CỔNG) ---
-// Nếu chưa có Session 'admin_login' thì bắt buộc đăng nhập
-if (!isset($_SESSION['admin_login'])) {
-    // Nếu người dùng đang gửi dữ liệu đăng nhập (action=checklogin) thì cho phép đi tiếp
-    if (isset($_GET['action']) && $_GET['action'] == 'checklogin') {
-        $taiKhoanCtrl->checkLogin();
-    } else {
-        // Còn lại tất cả các trường hợp khác đều bắt hiện form login
-        $taiKhoanCtrl->login();
-    }
-    // Dừng chương trình tại đây, không cho chạy xuống phần switch bên dưới
-    exit(); 
-}
-// ------------------------------------------
+// Khởi tạo các đối tượng Controller
+$homeController = new HomeController();
+$cartController = new CartController();
 
-// Nếu đã đăng nhập rồi thì chạy Switch này
-if(isset($_GET['action']) && $_GET['action'] != "") {
-    $action = $_GET['action'];
-    switch($action) {
-        // --- CÁC CASE ĐĂNG NHẬP / ĐĂNG XUẤT ---
-        case 'logout':
-            $taiKhoanCtrl->logout();
-            break;
+// -------------------------------------------------------------
+// PHẦN SỬA ĐỔI: Dùng If-Else để kiểm tra người dùng đang muốn vào trang nào
+// -------------------------------------------------------------
 
-        // --- DANH MỤC ---
-        case "listdanhmuc":
-            $danhMuc->index();
-            break;
-        case "createdanhmuc":
-            $danhMuc->create();
-            break;
-        case "storedanhmuc":
-            $danhMuc->store();
-            break;
-        case "editdanhmuc":
-            $danhMuc->edit();
-            break;
-        case "updatedanhmuc":
-            $danhMuc->update();
-            break;
-        case "deletedanhmuc":
-            $danhMuc->delete();
-            break;
-        case "restoredanhmuc":
-            $danhMuc->restore();
-            break;
-
-        // --- THỐNG KÊ ---
-        case "thongke":
-            $thongKe->index();
-            break;
-
-        // --- SẢN PHẨM ---
-        case "listsanpham":
-            $sanPham->index();
-            break;
-        case "createsanpham":
-            $sanPham->create();
-            break;
-        case "storesanpham":
-            $sanPham->store();
-            break;
-        case "editsanpham":
-            $sanPham->edit();
-            break;
-        case "updatesanpham":
-            $sanPham->update();
-            break;
-        case "deletesanpham":
-            $sanPham->delete();
-            break;
-        case "restoresanpham":
-            $sanPham->restore();
-            break;
-
-        // --- MÀU SẮC ---
-        case 'listmausac':
-            $mauSacCtrl->index();
-            break;
-        case 'createmausac':
-            $mauSacCtrl->create();
-            break;
-        case 'storemausac':
-            $mauSacCtrl->store();
-            break;
-        case 'editmausac':
-            $mauSacCtrl->edit();
-            break;
-        case 'updatemausac':
-            $mauSacCtrl->update();
-            break;
-        case 'deletemausac':
-            $mauSacCtrl->delete();
-            break;
-
-        // --- KÍCH CỠ ---
-        case 'listkichco':
-            $kichCoCtrl->index();
-            break;
-        case 'createkichco':
-            $kichCoCtrl->create();
-            break;
-        case 'storekichco':
-            $kichCoCtrl->store();
-            break;
-        case 'editkichco':
-            $kichCoCtrl->edit();
-            break;
-        case 'updatekichco':
-            $kichCoCtrl->update();
-            break;
-        case 'deletekichco':
-            $kichCoCtrl->delete();
-            break;
-        case 'addtocart':
-            $cart->index();
-            break;
-        case 'checkout':
-            $cart->index();
-            break;
-        default:
-            $danhMuc->index(); // Hoặc trang Dashboard
-            break;
-    }
+// Kiểm tra xem trên thanh địa chỉ (URL) có tham số 'act' hay không?
+// Ví dụ: index.php?act=shop -> Có act
+// Ví dụ: index.php -> Không có act
+if (isset($_GET['act'])) {
+    // Nếu có, lấy giá trị đó gán cho biến $act
+    $act = $_GET['act']; 
 } else {
-    // Mặc định vào trang danh mục hoặc Dashboard
-    $danhMuc->index();
+    // Nếu không có (người dùng vào trang chủ lần đầu), gán giá trị mặc định là '/'
+    $act = '/'; 
 }
-?>
+
+// -------------------------------------------------------------
+// ĐIỀU HƯỚNG: Dựa vào biến $act để gọi hàm tương ứng
+// -------------------------------------------------------------
+switch ($act) {
+    case 'shop':
+        $homeController->shop();
+        break;
+        
+    // --- CÁC CHỨC NĂNG GIỎ HÀNG & THANH TOÁN ---
+    case 'detail':
+        $cartController->detail(); // Xem chi tiết sản phẩm
+        break;
+        
+    case 'add_to_cart':
+        $cartController->addToCart(); // Thêm sản phẩm vào giỏ
+        break;
+        
+    case 'cart':
+        $cartController->viewCart(); // Xem giỏ hàng hiện tại
+        break;
+        
+    case 'delete_cart':
+        $cartController->deleteItem(); // Xóa sản phẩm khỏi giỏ
+        break;
+        
+    case 'checkout':
+        $cartController->checkout(); // Trang nhập thông tin thanh toán
+        break;
+        
+    case 'place_order':
+        $cartController->placeOrder(); // Xử lý lưu hóa đơn vào Database
+        break;
+    // -------------------------------------------
+
+    case 'about':
+        $homeController->about();
+        break;
+        
+    case 'contact':
+        $homeController->contact();
+        break;
+    
+    // --- CHỨC NĂNG TRA CỨU ĐƠN HÀNG (KHÔNG CẦN ĐĂNG NHẬP) ---
+    case 'check_order':
+        $cartController->checkOrder(); // Form nhập số điện thoại tra cứu
+        break;
+        
+    case 'history_detail':
+        $cartController->historyDetail(); // Xem chi tiết lịch sử đơn hàng đã mua
+        break;
+
+    case 'update_cart': // Thêm case này
+        $cartController->updateCart();
+        break;
+
+    // Mặc định: Nếu $act = '/' hoặc tên act lạ không khớp cái nào ở trên
+    // Thì sẽ chạy vào trang chủ
+    default:
+        $homeController->home();
+        break;
+}
 ?>
