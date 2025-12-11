@@ -19,6 +19,17 @@
     <link rel="stylesheet" href="css/owl.carousel.min.css" type="text/css">
     <link rel="stylesheet" href="css/slicknav.min.css" type="text/css">
     <link rel="stylesheet" href="css/style.css" type="text/css">
+    <style>
+    .header {
+        background-color: #ffffff;
+        /* Tạo đường bóng mờ bên dưới */
+        box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.05);
+        /* Cố định header luôn dính trên cùng khi cuộn chuột (Optional - thích thì dùng) */
+        position: sticky; 
+        top: 0;
+        z-index: 999;
+    }
+    </style>
 </head>
 
 <body>
@@ -75,8 +86,7 @@
                 
                 <div class="col-lg-2 col-md-2">
                     <div class="header__nav__option">
-                        <a href="#" class="search-switch"><img src="img/icon/search.png" alt=""></a>
-                        <a href="#"><img src="img/icon/heart.png" alt=""></a>
+                        <a >Giỏ hàng</a>
                         <a href="index.php?act=cart">
                             <img src="img/icon/cart.png" alt=""> 
                             <span>

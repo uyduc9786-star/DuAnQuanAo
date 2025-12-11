@@ -124,28 +124,28 @@ include_once "views/layout/header.php";
         <div class="row">
             <div class="col-lg-3 col-md-6 col-sm-6">
                 <div class="team__item">
-                    <img src="img/about/anhavartar01.webp" alt="">
+                    <img src="img/about/unnamed.jpg" alt="">
                     <h4>Nguyễn Văn Vũ</h4>
                     <span>Thiết kế thời trang</span>
                 </div>
             </div>
             <div class="col-lg-3 col-md-6 col-sm-6">
                 <div class="team__item">
-                    <img src="img/about/anhavartar01.webp" alt="">
+                    <img src="img/about/unnamed.jpg" alt="">
                     <h4>Ôn Dực Uy</h4>
                     <span>Điều hành</span>
                 </div>
             </div>
             <div class="col-lg-3 col-md-6 col-sm-6">
                 <div class="team__item">
-                    <img src="img/about/anhavartar01.webp" alt="">
+                    <img src="img/about/unnamed.jpg" alt="">
                     <h4>Bùi Gia Hưng</h4>
                     <span>Quản lý</span>
                 </div>
             </div>
             <div class="col-lg-3 col-md-6 col-sm-6">
                 <div class="team__item">
-                    <img src="img/about/anhavartar01.webp" alt="">
+                    <img src="img/about/unnamed.jpg" alt="">
                     <h4>Đào Anh Tuấn</h4>
                     <span>Giao hàng</span>
                 </div>

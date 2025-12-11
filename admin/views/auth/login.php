@@ -22,7 +22,7 @@
                 <div id="auth-left">
                     <div class="auth-logo">
                         <a href="index.php">
-                            <img src="/DuAnQuanAo/admin/views/assets/images/logo/logo.png" alt="Logo">
+                            <img src="/DuAnQuanAo/admin/views/assets/images/logo/logo12345.png" alt="Logo">
                         </a>
                     </div>
                     <h1 class="auth-title">Đăng Nhập.</h1>

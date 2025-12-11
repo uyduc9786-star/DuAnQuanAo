@@ -139,15 +139,6 @@ include_once "views/layout/header.php";
                                     <div class="product__item__pic set-bg" data-setbg="<?= $hinhPath ?>" 
                                          onclick="window.location.href='<?= $linkDetail ?>';" 
                                          style="cursor: pointer;">
-                                        
-                                        <?php if (isset($loai) && $loai != "") { ?>
-                                            <span class="label"><?= $loai ?></span>
-                                        <?php } ?>
-
-                                        <ul class="product__hover">
-                                            <li><a href="#"><img src="views/img/icon/heart.png" alt=""></a></li>
-                                            <li><a href="<?= $linkDetail ?>"><img src="views/img/icon/search.png" alt=""></a></li>
-                                        </ul>
                                     </div>
                                     
                                     <div class="product__item__text">
@@ -169,11 +160,8 @@ include_once "views/layout/header.php";
                                         </form>
 
                                         <div class="rating">
-                                            <i class="fa fa-star-o"></i>
-                                            <i class="fa fa-star-o"></i>
-                                            <i class="fa fa-star-o"></i>
-                                            <i class="fa fa-star-o"></i>
-                                            <i class="fa fa-star-o"></i>
+                                    
+                                        
                                         </div>
                                         <h5><?= number_format($gia_sp, 0, ',', '.') ?> đ</h5>
                                     </div>
@@ -195,15 +183,56 @@ include_once "views/layout/header.php";
                 </div>
                 
                 <div class="row">
-                    <div class="col-lg-12">
-                        <div class="product__pagination">
-                            <a class="active" href="#">1</a>
-                            <a href="#">2</a>
-                            <a href="#">3</a>
-                            <span>...</span>
-                            <a href="#">21</a>
+                        <div class="col-lg-12">
+                            <div class="product__pagination">
+                                <?php
+                                // 1. Tạo lại cái đường dẫn gốc (để khi bấm trang không bị mất lọc)
+                                // Bắt đầu là index.php?act=shop
+                                $link_co_ban = "index.php?act=shop";
+
+                                // Nếu đang lọc danh mục, nối thêm iddm vào link
+                                if (isset($_GET['iddm'])) {
+                                    $iddm = $_GET['iddm'];
+                                    $link_co_ban = $link_co_ban . "&iddm=" . $iddm;
+                                }
+
+                                // Nếu đang tìm kiếm, nối thêm keyword vào link
+                                if (isset($_GET['keyword'])) {
+                                    $kw = $_GET['keyword'];
+                                    $link_co_ban = $link_co_ban . "&keyword=" . $kw;
+                                }
+
+                                // Nếu đang lọc giá, nối thêm price vào link
+                                if (isset($_GET['price'])) {
+                                    $pr = $_GET['price'];
+                                    $link_co_ban = $link_co_ban . "&price=" . $pr;
+                                }
+                                
+                                // 2. Bắt đầu vòng lặp để in ra các con số 1, 2, 3...
+                                // Biến $tong_so_trang đã được tính ở Controller rồi
+                                
+                                // Chỉ hiện phân trang nếu có nhiều hơn 1 trang
+                                if ($tong_so_trang > 1) {
+
+                                    // Chạy vòng lặp từ 1 đến tổng số trang
+                                    for ($i = 1; $i <= $tong_so_trang; $i++) {
+                                        
+                                        // Kiểm tra xem $i có bằng trang hiện tại không
+                                        if ($i == $trang_hien_tai) {
+                                            // Nếu bằng thì in ra thẻ a có class="active" và không có href (để ko bấm đc)
+                                            echo '<a class="active" href="#">' . $i . '</a>';
+                                        } else {
+                                            // Nếu không bằng thì in ra thẻ a bình thường
+                                            // Đường dẫn sẽ ghép Link cơ bản + số trang
+                                            // Ví dụ: index.php?act=shop&iddm=5&page=2
+                                            $link_day_du = $link_co_ban . "&page=" . $i;
+                                            echo '<a href="' . $link_day_du . '">' . $i . '</a>';
+                                        }
+                                    }
+                                }
+                                ?>
+                            </div>
                         </div>
-                    </div>
                 </div>
             </div>
         </div>

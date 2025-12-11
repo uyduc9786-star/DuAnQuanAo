@@ -102,5 +102,54 @@ class UserSanpham {
     public function getAllSize() { 
         return pdo_query("SELECT * FROM kich_co"); 
     }
+    // ------------------------------------------------------------------
+    // HÀM MỚI 1: ĐẾM TỔNG SỐ SẢN PHẨM TÌM THẤY (DÙNG ĐỂ TÍNH SỐ TRANG)
+    // Code y hệt getAllShop nhưng thay SELECT * bằng SELECT COUNT(*)
+    // ------------------------------------------------------------------
+    public function getCountAllShop($categoryId, $minPrice, $maxPrice, $keyword) {
+        $sql = "SELECT COUNT(*) as tong_so FROM san_pham WHERE trang_thai = 1";
+        
+        // Vẫn phải lọc y hệt như lúc tìm kiếm
+        if ($categoryId > 0) {
+            $sql = $sql . " AND id_danh_muc = " . $categoryId;
+        }
+        if ($maxPrice > 0) {
+            $sql = $sql . " AND gia_sp BETWEEN " . $minPrice . " AND " . $maxPrice;
+        }
+        if ($keyword != "") {
+            $sql = $sql . " AND ten_sp LIKE '%" . $keyword . "%'";
+        }
+        
+        // Hàm này trả về 1 dòng chứa số lượng (ví dụ: 25)
+        // pdo_query_one là hàm lấy 1 dòng
+        $ketQua = pdo_query_one($sql);
+        return $ketQua['tong_so'];
+    }
+
+    // ------------------------------------------------------------------
+    // HÀM MỚI 2: LẤY SẢN PHẨM CÓ PHÂN TRANG (CÓ LIMIT VÀ OFFSET)
+    // ------------------------------------------------------------------
+    public function getAllShop_PhanTrang($categoryId, $minPrice, $maxPrice, $keyword, $bat_dau, $so_luong_1_trang) {
+        $sql = "SELECT * FROM san_pham WHERE trang_thai = 1";
+        
+        // Lọc dữ liệu (Copy y nguyên logic cũ)
+        if ($categoryId > 0) {
+            $sql = $sql . " AND id_danh_muc = " . $categoryId;
+        }
+        if ($maxPrice > 0) {
+            $sql = $sql . " AND gia_sp BETWEEN " . $minPrice . " AND " . $maxPrice;
+        }
+        if ($keyword != "") {
+            $sql = $sql . " AND ten_sp LIKE '%" . $keyword . "%'";
+        }
+        
+        $sql = $sql . " ORDER BY id_sp DESC";
+
+        // QUAN TRỌNG: Thêm đoạn giới hạn số lượng
+        // Ví dụ: LIMIT 0, 9 (Lấy từ 0, lấy 9 cái)
+        $sql = $sql . " LIMIT " . $bat_dau . ", " . $so_luong_1_trang;
+        
+        return pdo_query($sql);
+    }
 }
 ?>

@@ -17,10 +17,14 @@ include_once "views/layout/header.php";
         </div>
     </div>
 </section>
+
 <div class="map">
-    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3723.863981044336!2d105.74459841476343!3d21.038127792835514!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x313454b991d80fd5%3A0x53cefc99d6b0bf6f!2zVHLGsOG7nW5nIENhbyDEk-G6sW5nIEZQVCBQb2x5dGVjaG5pYw!5e0!3m2!1svi!2s!4v1647683936634!5m2!1svi!2s" 
-    height="500" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
+    <iframe 
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3728.3501908295625!2d106.70275521476016!3d20.85292698609503!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x314a7a9c2647d347%3A0xc3f14667d4681614!2zVHLGsOG7nW5nIENhbyDEkS4gRlBUIFBvbHl0ZWNobmlj!5e0!3m2!1svi!2s!4v1679021305417!5m2!1svi!2s" 
+        height="500" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+    </iframe>
 </div>
+
 <section class="contact spad">
     <div class="container">
         <div class="row">
@@ -29,41 +33,44 @@ include_once "views/layout/header.php";
                     <div class="section-title">
                         <span>Thông tin</span>
                         <h2>Liên hệ với chúng tôi</h2>
-                        <p>Như bạn có thể mong đợi về một cửa hàng thời trang nam cao cấp, chúng tôi luôn chú trọng đến từng chi tiết.</p>
+                        <p>Cửa hàng thời trang nam uy tín dành cho sinh viên.</p>
                     </div>
                     <ul>
                         <li>
-                            <h4>Hà Nội</h4>
-                            <p>Tòa nhà FPT Polytechnic, Phố Trịnh Văn Bô, Nam Từ Liêm <br />+84 982-314-0958</p>
+                            <h4>Hải Phòng (Trụ sở chính)</h4>
+                            <p>271 Lê Thánh Tông, Máy Chai, Ngô Quyền, Hải Phòng <br />+84 982-314-0958</p>
                         </li>
                         <li>
-                            <h4>Hồ Chí Minh</h4>
-                            <p>109 Đường Nguyễn Huệ, Quận 1 <br />+84 345-423-9893</p>
+                            <h4>Email hỗ trợ</h4>
+                            <p>davidsever2022@gmail.com</p>
                         </li>
                     </ul>
                 </div>
             </div>
+            
             <div class="col-lg-6 col-md-6">
                 <div class="contact__form">
-                    <form action="#">
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <input type="text" placeholder="Họ và tên">
-                            </div>
-                            <div class="col-lg-6">
-                                <input type="text" placeholder="Email">
-                            </div>
-                            <div class="col-lg-12">
-                                <textarea placeholder="Nội dung tin nhắn"></textarea>
-                                <button type="submit" class="site-btn">Gửi tin nhắn</button>
-                            </div>
-                        </div>
-                    </form>
+                    <div style="background: #f3f2ee; padding: 30px; text-align: center;">
+                        <h3>Gửi Email Trực Tiếp</h3>
+                        <p style="margin-bottom: 20px;">Nhấn nút bên dưới để gửi email trực tiếp cho quản trị viên.</p>
+                        
+                        <a href="https://mail.google.com/mail/?view=cm&fs=1&to=davidsever2022@gmail.com&su=Liên hệ từ Web Bán Quần Áo&body=Chào Admin, tôi cần hỗ trợ vấn đề này:" 
+                                target="_blank" 
+                                class="site-btn" 
+                                style="display: inline-block; text-decoration: none; color: white;">
+                                    Gửi Email qua Gmail <i class="fa fa-google"></i>
+                        </a>
+                        
+                        <p style="margin-top: 20px; font-size: 14px; color: #888;">
+                            (Hệ thống sẽ tự động mở ứng dụng Email trên máy của bạn)
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </section>
+
 <?php
 include_once "views/layout/footer.php";
 ?>

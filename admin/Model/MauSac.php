@@ -27,8 +27,13 @@ class MauSac {
     // Xóa (Lưu ý: Nếu xóa màu đang dùng cho SP thì có thể lỗi khóa ngoại, 
     // nhưng ở mức cơ bản ta cứ làm xóa thường)
     public function delete($id) {
-        $sql = "DELETE FROM mau_sac WHERE id_mausac = ?";
+        $sql = "UPDATE mau_sac SET Trangthai = 0 WHERE id_mausac = ?";
         pdo_execute($sql, $id);
     }
+    public function restore($id) {
+        $sql = "UPDATE mau_sac SET Trangthai = 1 WHERE id_mausac = ?";
+        pdo_execute($sql, $id);
+    }
+
 }
 ?>

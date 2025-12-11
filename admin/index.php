@@ -113,6 +113,9 @@ if(isset($_GET['action']) && $_GET['action'] != "") {
         case 'deletemausac':
             $mauSacCtrl->delete();
             break;
+        case 'restoremausac':
+            $mauSacCtrl->restore();
+            break;
 
         // --- KÍCH CỠ ---
         case 'listkichco':
@@ -152,4 +155,5 @@ if(isset($_GET['action']) && $_GET['action'] != "") {
     // Mặc định vào trang danh mục hoặc Dashboard
     $danhMuc->index();
 }
+
 ?>

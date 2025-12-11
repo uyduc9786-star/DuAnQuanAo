@@ -126,10 +126,7 @@ include_once "views/layout/header.php";
                                  onclick="window.location.href='<?= $linkDetail ?>';" 
                                  style="cursor: pointer;">
                                 
-                                <span class="label">Hot</span> <ul class="product__hover">
-                                    <li><a href="#"><img src="img/icon/heart.png" alt=""></a></li>
-                                    <li><a href="<?= $linkDetail ?>"><img src="img/icon/search.png" alt=""></a></li>
-                                </ul>
+                                <span class="label">Hot</span> 
                             </div>
                             
                             <div class="product__item__text">
@@ -149,13 +146,9 @@ include_once "views/layout/header.php";
                                         + Thêm vào giỏ
                                     </button>
                                 </form>
-
                                 <div class="rating">
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star-o"></i>
+                                    
+                                
                                 </div>
                                 <h5><?= number_format($gia_sp, 0, ',', '.') ?> đ</h5>
                             </div>
@@ -191,10 +184,7 @@ include_once "views/layout/header.php";
                                  onclick="window.location.href='<?= $linkDetail ?>';" 
                                  style="cursor: pointer;">
                                 
-                                <span class="label">New</span> <ul class="product__hover">
-                                    <li><a href="#"><img src="img/icon/heart.png" alt=""></a></li>
-                                    <li><a href="<?= $linkDetail ?>"><img src="img/icon/search.png" alt=""></a></li>
-                                </ul>
+                                <span class="label">New</span>
                             </div>
                             
                             <div class="product__item__text">
@@ -216,11 +206,8 @@ include_once "views/layout/header.php";
                                 </form>
 
                                 <div class="rating">
-                                    <i class="fa fa-star-o"></i>
-                                    <i class="fa fa-star-o"></i>
-                                    <i class="fa fa-star-o"></i>
-                                    <i class="fa fa-star-o"></i>
-                                    <i class="fa fa-star-o"></i>
+                                    
+
                                 </div>
                                 <h5><?= number_format($gia_sp, 0, ',', '.') ?> đ</h5>
                             </div>

@@ -72,7 +72,37 @@ class HomeController {
 
         // Bước 6: Gọi Model để lấy danh sách sản phẩm dựa trên các điều kiện lọc ở trên
         // Truyền tất cả các biến (danh mục, giá, từ khóa) vào hàm getAllShop
-        $allProducts = $this->userSanpham->getAllShop($categoryId, $minPrice, $maxPrice, $keyword);
+        // 1. Quy định mỗi trang hiện bao nhiêu sản phẩm (ví dụ 9 cái)
+        $so_luong_1_trang = 9;
+
+        // 2. Kiểm tra xem đang ở trang số mấy (Lấy từ URL, nếu ko có thì là trang 1)
+        if (isset($_GET['page'])) {
+            $trang_hien_tai = $_GET['page'];
+        } else {
+            $trang_hien_tai = 1;
+        }
+
+        // 3. Tính vị trí bắt đầu lấy (OFFSET)
+        // Công thức: (Trang hiện tại - 1) * Số lượng muốn lấy
+        $vi_tri_bat_dau = ($trang_hien_tai - 1) * $so_luong_1_trang;
+
+        // 4. Gọi hàm đếm tổng số lượng sản phẩm (Hàm mới tạo ở Model bước trước)
+        // Phải đếm trước thì mới biết chia ra được bao nhiêu trang
+        $tong_so_san_pham = $this->userSanpham->getCountAllShop($categoryId, $minPrice, $maxPrice, $keyword);
+        
+        // 5. Tính tổng số trang (Làm tròn lên)
+        $tong_so_trang = ceil($tong_so_san_pham / $so_luong_1_trang);
+
+        // 6. Gọi hàm lấy sản phẩm theo trang (Hàm mới tạo ở Model bước trước)
+        // Lưu ý: Biến kết quả vẫn đặt tên là $allProducts để bên View không bị lỗi
+        $allProducts = $this->userSanpham->getAllShop_PhanTrang(
+            $categoryId, 
+            $minPrice, 
+            $maxPrice, 
+            $keyword, 
+            $vi_tri_bat_dau, 
+            $so_luong_1_trang
+        );
         
         // Bước 7: Gọi file giao diện cửa hàng để hiển thị kết quả
         include "views/shop.php";

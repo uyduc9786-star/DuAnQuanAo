@@ -48,8 +48,17 @@ include_once("views/layouts/header.php");
 
                                 <td><?= $so_luong ?></td>
                                 <td>
-                                    <a href="index.php?action=editsanpham&id=<?= $id_sp ?>" class="btn btn-primary btn-sm">Sửa</a>
-                                    <a href="index.php?action=deletesanpham&id=<?= $id_sp ?>" class="btn btn-danger btn-sm">Xóa</a>
+                                    <a href="index.php?action=editsanpham&id=<?= $id_sp ?>" class="btn btn-secondary btn-sm">Sửa</a>
+                                    
+                                    <?php if ($trang_thai == 1) { ?>
+                                        <a href="index.php?action=deletesanpham&id=<?= $id_sp ?>"
+                                        onclick="return confirm('Bạn có muốn xóa không?')" 
+                                        class="btn btn-danger btn-sm">Xóa</a>
+                                    <?php } else { ?>
+                                        <a href="index.php?action=restoresanpham&id=<?= $id_sp ?>"
+                                        onclick="return confirm('Bạn có muốn khôi phục không?')" 
+                                        class="btn btn-warning btn-sm">Khôi phục</a>
+                                    <?php } ?>
                                 </td>
                             </tr>
                         <?php endforeach; ?>

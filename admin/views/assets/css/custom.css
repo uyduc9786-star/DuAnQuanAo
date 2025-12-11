@@ -1,22 +1,247 @@
-/* ========================================================
-   LOGIN PAGE - FASHION GLASSMORPHISM STYLE (Kính mờ thời trang)
-   ======================================================== */
+/* ================================================================
+   PHẦN 1: GIAO DIỆN ADMIN (MODERN FASHION - TỐI GIẢN CAO CẤP)
+   (Giao diện mới: Sắc nét, tương phản cao, nút bấm Gradient)
+   ================================================================ */
 
-/* 1. Thiết lập ảnh nền toàn màn hình */
+:root {
+  --bg-dark: #0f172a; /* Nền chính: Xám xanh đen sâu thẳm */
+  --bg-sidebar: #1e293b; /* Nền sidebar: Sáng hơn xíu */
+  --bg-card: #1e293b; /* Nền Card: Trùng màu sidebar cho liền mạch */
+  --text-primary: #f8fafc; /* Chữ chính: Trắng sáng (Hết mờ) */
+  --text-secondary: #94a3b8; /* Chữ phụ: Xám bạc */
+  --accent-gradient: linear-gradient(
+    135deg,
+    #6366f1 0%,
+    #a855f7 100%
+  ); /* Tím mộng mơ */
+  --btn-delete: linear-gradient(135deg, #ef4444 0%, #f43f5e 100%); /* Đỏ hồng */
+  --btn-edit: linear-gradient(135deg, #3b82f6 0%, #06b6d4 100%); /* Xanh biển */
+}
+
+/* 1. CẤU HÌNH CHUNG */
+body {
+  background-color: var(--bg-dark) !important;
+  color: var(--text-primary) !important;
+  font-family: "Nunito", sans-serif;
+  font-weight: 500; /* Tăng độ dày chữ mặc định */
+}
+
+#app {
+  background-color: var(--bg-dark);
+}
+
+/* 2. SIDEBAR (MENU TRÁI) - THIẾT KẾ PHẲNG HIỆN ĐẠI */
+#sidebar {
+  background-color: var(--bg-sidebar) !important;
+  border-right: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 4px 0 24px rgba(0, 0, 0, 0.2);
+}
+
+.sidebar-wrapper {
+  background-color: var(--bg-sidebar);
+}
+
+/* Logo Header Admin */
+.sidebar-header {
+  background: transparent !important;
+  margin: 20px 0;
+  text-align: center;
+  border: none;
+  box-shadow: none;
+}
+
+.brand-logo {
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.03);
+  padding: 10px;
+  border-radius: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.brand-logo span {
+  color: #fff !important;
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  background: -webkit-linear-gradient(#fff, #94a3b8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent; /* Hiệu ứng chữ kim loại */
+}
+
+/* Menu Items */
+.sidebar-title {
+  color: var(--text-secondary);
+  font-weight: 700;
+  letter-spacing: 1px;
+  font-size: 0.8rem;
+}
+
+.sidebar-link {
+  color: var(--text-secondary) !important;
+  transition: all 0.3s ease;
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+.sidebar-link i {
+  color: var(--text-secondary);
+}
+
+/* Hover & Active hiệu ứng phát sáng */
+.sidebar-item.active .sidebar-link,
+.sidebar-link:hover {
+  background: var(--accent-gradient) !important;
+  color: #fff !important;
+  box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4); /* Bóng đổ tím */
+  border-radius: 10px;
+}
+.sidebar-item.active .sidebar-link i,
+.sidebar-link:hover i {
+  color: #fff;
+}
+
+/* 3. MAIN CONTENT (PHẦN BẢNG DỮ LIỆU) */
+.page-heading h3 {
+  color: #fff !important;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  text-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* CARD - KHỐI CHỨA BẢNG */
+.card {
+  background-color: var(--bg-card) !important;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.05); /* Viền siêu mỏng */
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); /* Nổi khối */
+}
+
+.card-header {
+  background: transparent;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  color: #fff !important;
+  font-weight: 700;
+  font-size: 1.2rem;
+  padding: 1.5rem;
+}
+
+/* TABLE - SẮC NÉT & CHUYÊN NGHIỆP */
+.table {
+  color: var(--text-primary) !important;
+}
+
+/* Hàng tiêu đề bảng */
+.table thead th {
+  color: #94a3b8 !important; /* Màu xám sáng */
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  padding: 15px;
+}
+
+/* Các hàng dữ liệu */
+.table tbody td {
+  padding: 15px;
+  vertical-align: middle;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  font-size: 0.95rem;
+}
+
+/* Hiệu ứng khi di chuột vào dòng */
+.table tbody tr:hover {
+  background-color: rgba(255, 255, 255, 0.02);
+}
+
+/* 4. BUTTONS (NÚT BẤM THỜI THƯỢNG) */
+
+/* Nút Thêm Mới - Gradient Tím */
+body:not(.auth-page) .btn-primary,
+body:not(.auth-page) a[href*="add"] {
+  background: var(--accent-gradient) !important;
+  border: none !important;
+  color: #fff;
+  font-weight: 700;
+  padding: 10px 20px;
+  border-radius: 50px; /* Bo tròn viên thuốc */
+  box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+  transition: transform 0.2s;
+}
+body:not(.auth-page) .btn-primary:hover {
+  transform: translateY(-2px);
+}
+
+/* Nút Sửa - Gradient Xanh */
+body:not(.auth-page) .btn-warning,
+body:not(.auth-page) .btn-edit {
+  background: var(--btn-edit) !important;
+  border: none;
+  color: #fff !important;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3);
+}
+
+/* Nút Xóa - Gradient Đỏ Hồng */
+body:not(.auth-page) .btn-danger {
+  background: var(--btn-delete) !important;
+  border: none;
+  color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(239, 68, 68, 0.3);
+}
+
+/* Trạng thái (Badge) */
+.badge.bg-success {
+  background-color: rgba(
+    16,
+    185,
+    129,
+    0.2
+  ) !important; /* Nền xanh lá trong suốt */
+  color: #34d399 !important; /* Chữ xanh lá sáng */
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  padding: 5px 12px;
+  border-radius: 30px;
+}
+
+/* Input & Select trong Admin */
+#main .form-select,
+#main .form-control {
+  background-color: rgba(0, 0, 0, 0.2); /* Nền tối nhẹ */
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #fff;
+  border-radius: 10px;
+}
+#main .form-control:focus {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+}
+.sidebar-title {
+  color: #ffffff !important; /* Chuyển thành màu trắng */
+  font-size: 0.9rem; /* Tăng cỡ chữ lên xíu */
+  font-weight: 800; /* Chữ đậm */
+  text-transform: uppercase; /* In hoa toàn bộ */
+  letter-spacing: 1px; /* Dãn cách chữ cho sang */
+  margin-top: 20px; /* Cách xa các mục trên một chút */
+  margin-bottom: 10px;
+}
+
+/* ================================================================
+   PHẦN 2: TRANG LOGIN (FASHION GLASSMORPHISM)
+   (Đã fix Logo to hơn và giữ nguyên hiệu ứng cũ)
+   ================================================================ */
+
 #auth {
-  /* Ảnh nền Fashion tối màu sang trọng */
   background: url("../images/anhnen.jpg") no-repeat center center fixed;
   background-size: cover;
   min-height: 100vh;
-  width: 100%; /* Đảm bảo full chiều rộng */
+  width: 100%;
   display: flex;
-  align-items: center; /* Căn giữa chiều dọc */
-  justify-content: center; /* Căn giữa chiều ngang */
+  align-items: center;
+  justify-content: center;
   position: relative;
-  padding: 0 !important; /* Xóa padding mặc định nếu có */
+  padding: 0 !important;
 }
 
-/* Lớp phủ đen mờ lên ảnh nền để dễ đọc chữ */
 #auth::before {
   content: "";
   position: absolute;
@@ -24,53 +249,61 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.5); /* Độ tối 50% */
+  background: rgba(0, 0, 0, 0.5);
   z-index: 0;
 }
 
-/* 2. Ẩn cột bên phải (Cục xanh cũ) vì không cần nữa */
 #auth .col-lg-7 {
   display: none !important;
 }
 
-/* 3. CHỈNH LẠI KHUNG CHỨA FORM (QUAN TRỌNG NHẤT) */
 #auth .row {
   width: 100%;
   justify-content: center;
   position: relative;
   z-index: 1;
-  /* Thêm dòng này để ép nó không dãn full màn hình mà co lại vừa với form */
   height: auto !important;
-  margin: 0 !important; /* Xóa margin thừa của bootstrap row */
+  margin: 0 !important;
 }
 
 #auth .col-lg-5 {
   flex: 0 0 auto;
   width: 100%;
-  max-width: 480px; /* Giới hạn chiều rộng form */
+  max-width: 480px;
 }
 
-/* 4. TẠO HIỆU ỨNG KÍNH MỜ (GLASSMORPHISM) CHO FORM */
+/* Khung kính mờ */
 #auth #auth-left {
   padding: 3rem !important;
-  background: rgba(
-    30,
-    30,
-    45,
-    0.75
-  ) !important; /* Màu nền tối bán trong suốt */
-
-  /* Hiệu ứng mờ (Blur) */
+  background: rgba(30, 30, 45, 0.75) !important;
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-
-  border: 1px solid rgba(255, 255, 255, 0.1); /* Viền mỏng tinh tế */
-  border-radius: 20px; /* Bo góc mềm mại */
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); /* Bóng đổ sâu */
-  color: #fff; /* Chuyển chữ sang trắng */
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  color: #fff;
 }
 
-/* 5. Chỉnh màu chữ tiêu đề */
+/* --- [FIX] LOGO TO HƠN & ĐẸP HƠN --- */
+.auth-logo {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.auth-logo img {
+  height: 120px !important; /* Tăng từ 60px lên 120px */
+  width: auto;
+  object-fit: contain;
+  /* Thêm hiệu ứng phát sáng nhẹ cho logo nổi trên nền tối */
+  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.3));
+  transition: transform 0.3s;
+}
+
+.auth-logo img:hover {
+  transform: scale(1.05); /* Phóng to nhẹ khi di chuột vào */
+}
+
+/* Tiêu đề & Input */
 #auth h1.auth-title {
   color: #fff !important;
   font-size: 2.5rem;
@@ -81,7 +314,6 @@
   text-align: center;
 }
 
-/* 6. Chỉnh ô nhập liệu (Input) cho hợp nền tối */
 .form-group input.form-control {
   background-color: rgba(0, 0, 0, 0.3) !important;
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
@@ -89,23 +321,19 @@
   border-radius: 50px !important;
   padding-left: 20px;
 }
+
 .form-group input.form-control:focus {
-  border-color: #ff5722 !important; /* Màu cam thời trang */
+  border-color: #ff5722 !important;
   box-shadow: 0 0 0 4px rgba(255, 87, 34, 0.2);
 }
 
-/* 7. Icon trong input */
 .form-control-icon i {
   color: #a2a3b7 !important;
 }
 
-/* 8. Nút đăng nhập */
-button.btn-primary {
-  background: linear-gradient(
-    45deg,
-    #ff5722,
-    #ff8a50
-  ) !important; /* Gradient Cam */
+/* Nút Đăng nhập (Màu Cam - giữ nguyên không theo admin) */
+#auth button.btn-primary {
+  background: linear-gradient(45deg, #ff5722, #ff8a50) !important;
   border: none !important;
   border-radius: 50px !important;
   font-weight: bold;
@@ -113,17 +341,79 @@ button.btn-primary {
   letter-spacing: 1px;
   margin-top: 20px;
   box-shadow: 0 4px 15px rgba(255, 87, 34, 0.4);
+  width: 100%; /* Full chiều rộng nút */
 }
-button.btn-primary:hover {
+
+#auth button.btn-primary:hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 20px rgba(255, 87, 34, 0.6);
 }
-
-/* Chỉnh logo nhỏ lại và căn giữa */
 .auth-logo {
   margin-bottom: 2rem;
   text-align: center;
+  width: 100%;
 }
+
 .auth-logo img {
-  height: 60px !important; /* Chỉnh lại logo cho vừa */
+  /* TĂNG KÍCH THƯỚC KHỦNG */
+  height: 150px !important;
+  width: auto !important;
+  max-width: 100%;
+  object-fit: contain;
+
+  /* QUAN TRỌNG: Làm logo sáng lên vì nền tối */
+  /* Drop-shadow màu trắng để tạo viền sáng bao quanh logo xanh */
+  filter: drop-shadow(0 0 2px #fff) drop-shadow(0 0 5px #435ebe) brightness(1.2);
+
+  transition: transform 0.3s;
+}
+.card-header h4 {
+  background: linear-gradient(to right, #6366f1, #a855f7); /* Tím mộng mơ */
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent; /* Biến màu nền thành màu chữ */
+  font-weight: 900 !important; /* Chữ siêu đậm */
+  text-transform: uppercase; /* In hoa */
+  letter-spacing: 1px;
+  margin: 0;
+}
+/* 1. Ép toàn bộ ô trong bảng thành màu trắng tinh & nét hơn */
+.table tbody td {
+  color: #ffffff !important; /* Chữ trắng tuyệt đối */
+  opacity: 1 !important; /* Không cho phép mờ */
+  font-weight: 500 !important; /* Tăng độ dày chữ nhẹ để nét hơn trên nền tối */
+  vertical-align: middle !important; /* Căn giữa chiều dọc cho đẹp */
+}
+
+/* 2. QUAN TRỌNG: Ép cả các thẻ con bên trong (span, small, div, a...) phải trắng theo */
+/* Cái này sẽ fix được mấy dòng như Số điện thoại, Size, Màu... bị tối */
+.table tbody td *,
+.table tbody td span,
+.table tbody td small,
+.table tbody td p,
+.table tbody td a {
+  color: #ffffff !important;
+  opacity: 1 !important;
+}
+
+/* 3. Riêng các nút bấm (Sửa/Xóa/Chi tiết) thì giữ nguyên màu của nó */
+.table tbody td .btn,
+.table tbody td .badge {
+  color: #ffffff !important; /* Chữ trong nút vẫn trắng */
+  /* Không ép background để tránh mất màu nút */
+}
+
+/* 4. Fix tiêu đề cột cho rõ ràng hơn */
+.table thead th {
+  color: #e2e8f0 !important; /* Màu trắng hơi xám nhẹ để phân biệt với dữ liệu */
+  font-weight: 700 !important;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.table tbody td .badge.bg-light,
+.table tbody td .text-dark {
+  color: #1e293b !important; /* Ép chữ thành màu Xanh Đen đậm để đọc được */
+  background-color: #f1f5f9 !important; /* Chỉnh nền sang màu trắng xám cho dịu mắt */
+  font-weight: 800 !important; /* Chữ đậm lên */
+  border: 1px solid rgba(255, 255, 255, 0.3); /* Thêm viền nhẹ */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }

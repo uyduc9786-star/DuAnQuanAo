@@ -18,7 +18,6 @@ class SanPham {
                 LEFT JOIN danh_muc dm ON sp.id_danh_muc = dm.id_danh_muc
                 LEFT JOIN mau_sac ms ON sp.id_mau_sac = ms.id_mausac
                 LEFT JOIN kich_co kc ON sp.id_kich_co = kc.id_kichco
-                WHERE sp.trang_thai = 1 
                 ORDER BY sp.id_sp DESC";
                 
         return pdo_query($sql);

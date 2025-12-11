@@ -1,81 +1,69 @@
+<style>
+    /* Chỉnh màu cho tiêu đề "THÔNG TIN LIÊN HỆ" */
+    .footer__widget h6 {
+        color: #ffffff !important; /* Màu trắng tinh */
+        font-weight: 700;
+    }
+
+    /* Chỉnh màu cho các dòng địa chỉ, điện thoại, email */
+    .footer__widget ul li {
+        color: #e1e1e1 !important; /* Màu trắng hơi xám nhẹ cho đỡ chói */
+        font-size: 15px;
+    }
+
+    /* Chỉnh màu số điện thoại và email cho rõ hơn */
+    .footer__widget ul li span { 
+        color: #ffffff !important;
+    }
+</style>
 <footer class="footer">
         <div class="container">
             <div class="row">
-                <div class="col-lg-3 col-md-6 col-sm-6">
+                <div class="col-lg-6 col-md-6 col-sm-6">
                     <div class="footer__about">
                         <div class="footer__logo">
-                            <a href="#"><img src="img/footer-logo.png" alt=""></a>
+                            <a href="index.php"><img src="img/footer-logo.png" alt=""></a>
                         </div>
-                        <p>Khách hàng là trọng tâm trong mô hình kinh doanh độc đáo của chúng tôi, bao gồm cả thiết kế.</p>
-                        <a href="#"><img src="img/payment.png" alt=""></a>
+                        <p>Website bán quần áo thời trang nam - Dự án thực tập của nhóm sinh viên FPT Polytechnic Hải Phòng.</p>
+                        
                     </div>
                 </div>
-                <div class="col-lg-2 offset-lg-1 col-md-3 col-sm-6">
+
+                <div class="col-lg-6 col-md-6 col-sm-6">
                     <div class="footer__widget">
-                        <h6>Shopping</h6>
+                        <h6>THÔNG TIN LIÊN HỆ</h6>
                         <ul>
-                            <li><a href="#">Clothing Store</a></li>
-                            <li><a href="#">Trending Shoes</a></li>
-                            <li><a href="#">Accessories</a></li>
-                            <li><a href="#">Sale</a></li>
+                            <li>Địa chỉ: 271 Lê Thánh Tông, Máy Chai, Ngô Quyền, Hải Phòng</li>
+                            <li>Điện thoại: 0776781111</li>
+                            <li>Email: davidsever2022@gmail.com</li>
                         </ul>
                     </div>
                 </div>
-                <div class="col-lg-2 col-md-3 col-sm-6">
-                    <div class="footer__widget">
-                        <h6>Shopping</h6>
-                        <ul>
-                            <li><a href="#">Contact Us</a></li>
-                            <li><a href="#">Payment Methods</a></li>
-                            <li><a href="#">Delivary</a></li>
-                            <li><a href="#">Return & Exchanges</a></li>
-                        </ul>
-                    </div>
+                
                 </div>
-                <div class="col-lg-3 offset-lg-1 col-md-6 col-sm-6">
-                    <div class="footer__widget">
-                        <h6>NewLetter</h6>
-                        <div class="footer__newslatter">
-                            <p>Be the first to know about new arrivals, look books, sales & promos!</p>
-                            <form action="#">
-                                <input type="text" placeholder="Your email">
-                                <button type="submit"><span class="icon_mail_alt"></span></button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
+
             <div class="row">
                 <div class="col-lg-12 text-center">
                     <div class="footer__copyright__text">
-                        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                        <p>Copyright ©
+                        <p>Copyright © 
                             <script>
                                 document.write(new Date().getFullYear());
-                            </script>2020
-                            All rights reserved | This template is made with <i class="fa fa-heart-o"
-                            aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+                            </script>
+                            All rights reserved | Dự án sinh viên <i class="fa fa-heart-o" aria-hidden="true"></i>
                         </p>
-                        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
                     </div>
                 </div>
             </div>
         </div>
     </footer>
-    <!-- Footer Section End -->
-
-    <!-- Search Begin -->
     <div class="search-model">
         <div class="h-100 d-flex align-items-center justify-content-center">
             <div class="search-close-switch">+</div>
             <form class="search-model-form">
-                <input type="text" id="search-input" placeholder="Search here.....">
+                <input type="text" id="search-input" placeholder="Tìm kiếm sản phẩm...">
             </form>
         </div>
     </div>
-    <!-- Search End -->
-
-    <!-- Js Plugins -->
     <script src="js/jquery-3.3.1.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/jquery.nice-select.min.js"></script>
@@ -88,4 +76,4 @@
     <script src="js/main.js"></script>
 </body>
 
-</html>   css fonts home img js webfonts
+</html>
