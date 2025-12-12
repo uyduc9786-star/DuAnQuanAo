@@ -43,7 +43,7 @@ include_once("views/layouts/header.php");
                                     <span class="badge bg-primary"><?= $ten_mau ?? 'Chưa rõ' ?></span>
                                 </td>
                                 <td>
-                                    <span class="badge bg-info"><?= $loai_kich_co ?? 'Chưa rõ' ?></span>
+                                    <span class="badge bg-primary"><?= $loai_kich_co ?? 'Chưa rõ' ?></span>
                                 </td>
 
                                 <td><?= $so_luong ?></td>

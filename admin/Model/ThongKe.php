@@ -1,56 +1,73 @@
 <?php
 class ThongKe {
     
-    // 1. Hàm doanh thu (Giữ nguyên)
+    // 1. Hàm thống kê doanh thu (Chỉ lấy Đã giao)
     public function load_thongke_doanhthu($ngay_bat_dau, $ngay_ket_thuc) {
-        $sql = "SELECT DATE(ngay_dat) as ngay, ";
-        $sql .= "COUNT(id_hoadon) as so_luong_don, ";
-        $sql .= "SUM(tongtien) as doanh_thu ";
-        $sql .= "FROM hoadon ";
-        $sql .= "WHERE trang_thai != 'Đã hủy' ";
-        $sql .= "AND DATE(ngay_dat) >= '$ngay_bat_dau' ";
-        $sql .= "AND DATE(ngay_dat) <= '$ngay_ket_thuc' ";
-        $sql .= "GROUP BY DATE(ngay_dat) ";
-        $sql .= "ORDER BY DATE(ngay_dat) ASC";
+        $sql = "SELECT 
+                    DATE(ngay_dat) as ngay, 
+                    COUNT(id_hoadon) as so_luong_don, 
+                    SUM(tongtien) as doanh_thu 
+                FROM hoadon 
+                WHERE trang_thai LIKE '%Đã giao%' 
+                AND DATE(ngay_dat) >= '$ngay_bat_dau' 
+                AND DATE(ngay_dat) <= '$ngay_ket_thuc' 
+                GROUP BY DATE(ngay_dat) 
+                ORDER BY DATE(ngay_dat) ASC";
         return pdo_query($sql);
     }
 
-    // 2. Hàm danh mục (SỬA LỖI ĐẾM SẢN PHẨM ĐÃ XÓA TẠI ĐÂY)
-    public function load_thongke_sanpham_danhmuc() {
-        $sql = "SELECT dm.id_danh_muc AS id, ";
-        $sql .= "dm.name_danh_muc AS name, ";
-        
-        // Vẫn giữ DISTINCT để không bị đếm trùng khi join bảng hóa đơn
-        $sql .= "COUNT(DISTINCT sp.id_sp) as countSp, "; 
-        
-        $sql .= "MIN(sp.gia_sp) as minPrice, ";
-        $sql .= "MAX(sp.gia_sp) as maxPrice, ";
-        $sql .= "AVG(sp.gia_sp) as avgPrice, ";
-        
-        $sql .= "SUM(ct.so_luong * sp.gia_sp) as totalRevenue "; 
+    // 2. Hàm thống kê danh mục (Dùng Subquery để tính tiền CHÍNH XÁC TUYỆT ĐỐI)
+    public function load_thongke_sanpham_danhmuc($ngay_bat_dau, $ngay_ket_thuc) {
+        $sql = "SELECT 
+                    danh_muc.id_danh_muc AS id, 
+                    danh_muc.name_danh_muc AS name, 
+                    
+                    -- Đếm số lượng sản phẩm (Dùng DISTINCT để không đếm trùng)
+                    COUNT(DISTINCT san_pham.id_sp) AS countSp, 
+                    
+                    -- TÍNH TỔNG TIỀN TRỰC TIẾP (Dùng hàm SUM kết hợp điều kiện)
+                    -- Logic: Nếu đơn Đã giao và đúng ngày thì cộng tiền, ngược lại thì cộng 0  
+                    COALESCE(SUM(
+                        CASE 
+                            WHEN hoadon.trang_thai LIKE '%Đã giao%' 
+                                AND DATE(hoadon.ngay_dat) >= '$ngay_bat_dau' 
+                                AND DATE(hoadon.ngay_dat) <= '$ngay_ket_thuc' 
+                            THEN chi_tiet_hoa_don.so_luong * chi_tiet_hoa_don.gia 
+                            ELSE 0 
+                        END
+                    ), 0) AS totalRevenue 
 
-        $sql .= "FROM danh_muc dm ";
-        
-        // --- QUAN TRỌNG: THÊM ĐIỀU KIỆN 'trang_thai = 1' VÀO ĐÂY ---
-        // Nghĩa là: Chỉ lấy những sản phẩm đang hiện (trang_thai = 1)
-        // Những cái đã xóa (trang_thai = 0) sẽ bị loại ra khỏi phép đếm
-        $sql .= "LEFT JOIN san_pham sp ON dm.id_danh_muc = sp.id_danh_muc AND sp.trang_thai = 1 ";
-        
-        $sql .= "LEFT JOIN chi_tiet_hoa_don ct ON sp.id_sp = ct.id_sanpham ";
+                FROM danh_muc 
+                
+                -- Nối bảng Sản phẩm (Chỉ lấy SP đang hoạt động)
+                LEFT JOIN san_pham 
+                    ON danh_muc.id_danh_muc = san_pham.id_danh_muc 
+                    AND san_pham.trang_thai = 1 
+                
+                -- Nối bảng Chi tiết hóa đơn
+                LEFT JOIN chi_tiet_hoa_don 
+                    ON san_pham.id_sp = chi_tiet_hoa_don.id_sanpham 
+                
+                -- Nối bảng Hóa đơn (Để lấy ngày và trạng thái)
+                LEFT JOIN hoadon 
+                    ON chi_tiet_hoa_don.id_hoadon = hoadon.id_hoadon
 
-        $sql .= "GROUP BY dm.id_danh_muc, dm.name_danh_muc ";
-        $sql .= "ORDER BY countSp DESC"; 
+                GROUP BY danh_muc.id_danh_muc, danh_muc.name_danh_muc 
+                ORDER BY totalRevenue DESC";
         
         return pdo_query($sql);
     }
     
-    // 3. Hàm doanh thu gần đây (Giữ nguyên)
+    // 3. Hàm Doanh thu gần đây (Sidebar)
     public function load_doanhthu_ganday() {
-         $sql = "SELECT DATE(ngay_dat) as ngay, SUM(tongtien) as doanh_thu ";
-         $sql .= "FROM hoadon WHERE trang_thai != 'Đã hủy' ";
-         $sql .= "GROUP BY DATE(ngay_dat) ";
-         $sql .= "ORDER BY DATE(ngay_dat) DESC "; 
-         $sql .= "LIMIT 5"; 
+         $sql = "SELECT 
+                    DATE(ngay_dat) as ngay, 
+                    SUM(tongtien) as doanh_thu 
+                 FROM hoadon 
+                 WHERE trang_thai LIKE '%Đã giao%' 
+                 GROUP BY DATE(ngay_dat) 
+                 ORDER BY DATE(ngay_dat) DESC 
+                 LIMIT 5";
          return pdo_query($sql);
     }
 }

@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="views/assets/vendors/bootstrap-icons/bootstrap-icons.css">
     <link rel="stylesheet" href="views/assets/css/app.css">
     <link rel="shortcut icon" href="views/assets/images/favicon.svg" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="./views/assets/css/custom.css?v=1">
     <style>
                 /* --- CSS CHO SIDEBAR (MENU TRÁI) --- */

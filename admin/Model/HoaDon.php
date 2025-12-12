@@ -16,14 +16,18 @@ class HoaDon {
 
     // Lấy chi tiết sản phẩm trong hóa đơn (Kèm tên SP và Ảnh)
     public function getOrderDetail($id_hoadon) {
-        // Join bảng chi tiết với bảng sản phẩm để lấy tên và ảnh
-        $sql = "SELECT ct.*, sp.ten_sp, sp.hinh_anh 
-                FROM chi_tiet_hoa_don ct 
-                JOIN san_pham sp ON ct.id_sanpham = sp.id_sp 
-                WHERE ct.id_hoadon = " . $id_hoadon;
-        return pdo_query($sql);
+        $sql = "SELECT 
+                    chi_tiet_hoa_don.so_luong,
+                    chi_tiet_hoa_don.gia,
+                    chi_tiet_hoa_don.mau,
+                    chi_tiet_hoa_don.size,
+                    san_pham.ten_sp,
+                    san_pham.hinh_anh 
+                FROM chi_tiet_hoa_don 
+                JOIN san_pham ON chi_tiet_hoa_don.id_sanpham = san_pham.id_sp
+                WHERE chi_tiet_hoa_don.id_hoadon = ?";
+        return pdo_query($sql, $id_hoadon);
     }
-
     // Cập nhật trạng thái đơn hàng (Ví dụ: Chờ xử lý -> Đang giao)
     public function updateStatus($id, $status) {
         $sql = "UPDATE hoadon SET trang_thai = '$status' WHERE id_hoadon = " . $id;

@@ -25,11 +25,33 @@
                                 <?= $order['ho_ten'] ?><br>
                                 <small><?= $order['sdt'] ?></small>
                             </td>
-                            <td><?= date('d/m/Y', strtotime($order['ngay_dat_hang'] ?? 'now')) ?></td> <td><?= number_format($order['tongtien']) ?> đ</td>
+                            <td><?= date('d/m/Y', strtotime($order['ngay_dat'] ?? 'now')) ?></td>
+                            <td><?= number_format($order['tongtien']) ?> đ</td>
                             <td>
-                                <span class="badge bg-<?= $order['trang_thai'] == 'Mới' ? 'info' : ($order['trang_thai'] == 'Hoàn tất' ? 'success' : 'warning') ?>">
-                                    <?= $order['trang_thai'] ?>
-                                </span>
+                                    <?php
+                                        $class_mau = '';
+            
+                                        switch ($order['trang_thai']) {
+                                            case 'Mới':
+                                                $class_mau = 'info';
+                                                break;
+                                            
+                                            case 'Đã giao':
+                                                $class_mau = 'success';
+                                                break;
+
+                                            case 'Đã hủy':
+                                                $class_mau = 'danger'; // Màu đỏ
+                                                break;
+
+                                            default:
+                                                $class_mau = 'warning'; // Các trường hợp còn lại
+                                                break;
+                                        }
+                                    ?>
+                                    <span class="badge bg-<?= $class_mau ?>">
+                                        <?= $order['trang_thai'] ?>
+                                    </span>
                             </td>
                             <td>
                                 <a href="index.php?action=hoadon_detail&id=<?= $order['id_hoadon'] ?>" class="btn btn-sm btn-primary">Chi tiết</a>

@@ -1,12 +1,11 @@
 <?php
 include_once("views/layouts/header.php");
 
-// --- PHẦN 1: TÍNH TOÁN SỐ LIỆU TRONG PHP (CHO CODE HTML SẠCH) ---
+// --- PHẦN 1: TÍNH TOÁN SỐ LIỆU TRONG PHP ---
 
 $tong_doanh_thu = 0;
 $tong_don_hang = 0;
-$tong_san_pham_all = 0; // Biến này để tính tổng sản phẩm
-$trung_binh_doanh_thu = 0;
+$tong_san_pham_all = 0; 
 
 $mang_ngay = [];
 $mang_tien = [];
@@ -21,10 +20,6 @@ if (isset($listDoanhThu) && is_array($listDoanhThu)) {
         $mang_ngay[] = date("d/m", strtotime($dt['ngay']));
         $mang_tien[] = $dt['doanh_thu'];
     }
-    // Tính trung bình
-    if(count($listDoanhThu) > 0) {
-        $trung_binh_doanh_thu = $tong_doanh_thu / count($listDoanhThu);
-    }
 }
 
 // 2. Xử lý dữ liệu Danh mục (Để tính tổng số lượng sản phẩm)
@@ -35,16 +30,19 @@ if (isset($listDanhMuc) && is_array($listDanhMuc)) {
 }
 ?>
 
-<link rel="stylesheet" href="assets/vendors/iconly/bold.css">
-
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 <style>
-    /* CSS màu mè cho chữ nổi */
+    .stats-icon {
+        display: flex !important; align-items: center !important; justify-content: center !important;
+        width: 48px; height: 48px; border-radius: 0.5rem;
+    }
+    .stats-icon i { color: #fff !important; font-size: 1.5rem !important; line-height: 0; }
+    /* Các CSS khác giữ nguyên */
     .font-extrabold { color: #fff !important; font-weight: 800; }
     .text-muted { color: #ddd !important; }
-    .card-header h4 { color: #fff !important; }
-    /* CSS cho bảng danh mục */
-    .table-hover tbody tr:hover { background-color: rgba(255,255,255,0.1); }
-    .table td, .table th { color: #fff !important; vertical-align: middle; }
+    .apexcharts-xaxis-label, .apexcharts-yaxis-label { fill: #ffffff !important; }
+    .apexcharts-datalabel { fill: #ffffff !important; }
+    .apexcharts-gridline { stroke: #555555 !important; }
 </style>
 
 <div class="page-heading">
@@ -65,11 +63,15 @@ if (isset($listDanhMuc) && is_array($listDanhMuc)) {
 <div class="page-content">
     
     <div class="row">
-        <div class="col-6 col-lg-3">
+        <div class="col-12 col-md-4">
             <div class="card">
                 <div class="card-body px-3 py-4">
                     <div class="row">
-                        <div class="col-md-4"><div class="stats-icon purple"><i class="iconly-boldShow"></i></div></div>
+                        <div class="col-md-4">
+                            <div class="stats-icon purple">
+                                <i class="bi bi-cash-stack"></i> 
+                            </div>
+                        </div>
                         <div class="col-md-8">
                             <h6 class="text-muted font-semibold">Doanh Thu</h6>
                             <h6 class="font-extrabold mb-0"><?= number_format($tong_doanh_thu/1000000, 1, ',', '.') ?> M</h6>
@@ -79,11 +81,16 @@ if (isset($listDanhMuc) && is_array($listDanhMuc)) {
                 </div>
             </div>
         </div>
-        <div class="col-6 col-lg-3">
+
+        <div class="col-12 col-md-4">
             <div class="card">
                 <div class="card-body px-3 py-4">
                     <div class="row">
-                        <div class="col-md-4"><div class="stats-icon blue"><i class="iconly-boldBuy"></i></div></div>
+                        <div class="col-md-4">
+                            <div class="stats-icon blue">
+                                <i class="bi bi-cart-check-fill"></i>
+                            </div>
+                        </div>
                         <div class="col-md-8">
                             <h6 class="text-muted font-semibold">Tổng Đơn</h6>
                             <h6 class="font-extrabold mb-0"><?= $tong_don_hang ?></h6>
@@ -92,11 +99,16 @@ if (isset($listDanhMuc) && is_array($listDanhMuc)) {
                 </div>
             </div>
         </div>
-        <div class="col-6 col-lg-3">
+
+        <div class="col-12 col-md-4">
             <div class="card">
                 <div class="card-body px-3 py-4">
                     <div class="row">
-                        <div class="col-md-4"><div class="stats-icon green"><i class="iconly-boldBag"></i></div></div>
+                        <div class="col-md-4">
+                            <div class="stats-icon green">
+                                <i class="bi bi-box-seam-fill"></i>
+                            </div>
+                        </div>
                         <div class="col-md-8">
                             <h6 class="text-muted font-semibold">Sản Phẩm</h6>
                             <h6 class="font-extrabold mb-0"><?= $tong_san_pham_all ?></h6>
@@ -105,21 +117,7 @@ if (isset($listDanhMuc) && is_array($listDanhMuc)) {
                 </div>
             </div>
         </div>
-        <div class="col-6 col-lg-3">
-            <div class="card">
-                <div class="card-body px-3 py-4">
-                    <div class="row">
-                        <div class="col-md-4"><div class="stats-icon red"><i class="iconly-boldChart"></i></div></div>
-                        <div class="col-md-8">
-                            <h6 class="text-muted font-semibold">TB/Ngày</h6>
-                            <h6 class="font-extrabold mb-0"><?= number_format($trung_binh_doanh_thu, 0, ',', '.') ?></h6>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
-
     <div class="row">
         <div class="col-12 col-lg-8">
             <div class="card">
@@ -165,7 +163,6 @@ if (isset($listDanhMuc) && is_array($listDanhMuc)) {
                                 <tr>
                                     <th>Tên Danh Mục</th>
                                     <th>Số lượng SP</th>
-                                    <th>Giá TB</th>
                                     <th>Doanh thu ước tính</th>
                                 </tr>
                             </thead>
@@ -178,9 +175,6 @@ if (isset($listDanhMuc) && is_array($listDanhMuc)) {
                                         </td>
                                         <td>
                                             <span class="badge bg-primary"><?= $dm['countSp'] ?></span>
-                                        </td>
-                                        <td>
-                                            <?= number_format($dm['avgPrice'], 0, ',', '.') ?> đ
                                         </td>
                                         <td>
                                             <?php $dt_danhmuc = $dm['totalRevenue'] ? $dm['totalRevenue'] : 0; ?>
@@ -208,25 +202,11 @@ if (isset($listDanhMuc) && is_array($listDanhMuc)) {
             name: 'Doanh thu',
             data: <?php echo json_encode($mang_tien); ?>
         }],
-        chart: {
-            type: 'bar',
-            height: 350,
-            toolbar: { show: false }
-        },
+        chart: { type: 'bar', height: 350, toolbar: { show: false } },
         colors: ['#435ebe'],
-        xaxis: {
-            categories: <?php echo json_encode($mang_ngay); ?>
-        },
-        tooltip: {
-            theme: 'dark',
-            y: {
-                formatter: function (val) {
-                    return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(val);
-                }
-            }
-        }
+        xaxis: { categories: <?php echo json_encode($mang_ngay); ?> },
+        tooltip: { theme: 'dark', y: { formatter: function (val) { return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(val); } } }
     };
-
     var chart = new ApexCharts(document.querySelector("#chart-doanh-thu"), options);
     chart.render();
 </script>

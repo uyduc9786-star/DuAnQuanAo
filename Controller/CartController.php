@@ -67,13 +67,13 @@ class CartController {
             if (isset($_POST['mau'])) {
                 $mau = $_POST['mau'];
             } else {
-                $mau = 'Mặc định';
+                $mau = 'Đỏ';
             }
 
             if (isset($_POST['size'])) {
                 $size = $_POST['size'];
             } else {
-                $size = 'F'; // Free size
+                $size = 'S'; // Free size
             }
 
             // Bước 2: Tạo một cái Mã (Key) duy nhất cho sản phẩm trong giỏ

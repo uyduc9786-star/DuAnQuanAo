@@ -83,17 +83,75 @@
                         <h4>Cập nhật trạng thái</h4>
                     </div>
                     <div class="card-body">
+                        <?php
+                            // 1. Khai báo các biến trạng thái select (Mặc định là rỗng)
+                            $selected_cho_xac_nhan = "";
+                            $selected_dang_giao    = "";
+                            $selected_da_giao      = "";
+                            $selected_da_huy       = "";
+                            
+                            // 2. Khai báo biến để khóa form (Mặc định là rỗng - tức là không khóa)
+                            $khoa_form = ""; 
+                            $loi_nhan  = ""; // Biến để hiện thông báo nếu cần
+
+                            // 3. Dùng IF - ELSEIF để kiểm tra logic
+                            if ($order['trang_thai'] == 'Chờ xác nhận') {
+                                $selected_cho_xac_nhan = "selected";
+                            } 
+                            elseif ($order['trang_thai'] == 'Đang giao hàng') {
+                                $selected_dang_giao = "selected";
+                            } 
+                            elseif ($order['trang_thai'] == 'Đã giao') {
+                                $selected_da_giao = "selected";
+                            } 
+                            elseif ($order['trang_thai'] == 'Đã hủy') {
+                                $selected_da_huy = "selected";
+                                
+                                // LOGIC QUAN TRỌNG: Nếu đã hủy thì gán chữ "disabled" vào biến khóa
+                                $khoa_form = "disabled"; 
+                                $loi_nhan  = "Đơn hàng này đã bị hủy. Bạn không thể cập nhật trạng thái nữa.";
+                            }
+                        ?>
+
                         <form action="index.php?action=update_status" method="POST">
+                            
                             <input type="hidden" name="id" value="<?= $order['id_hoadon'] ?>">
+                            
                             <div class="form-group">
-                                <select name="trang_thai" class="form-select mb-3">
-                                    <option value="Chờ xác nhận" <?= $order['trang_thai'] == 'Chờ xác nhận' ? 'selected' : '' ?>>Chờ xác nhận</option>
-                                    <option value="Đang giao hàng" <?= $order['trang_thai'] == 'Đang giao hàng' ? 'selected' : '' ?>>Đang giao hàng</option>
-                                    <option value="Đã giao" <?= $order['trang_thai'] == 'Đã giao' ? 'selected' : '' ?>>Đã giao (Hoàn tất)</option>
-                                    <option value="Đã hủy" <?= $order['trang_thai'] == 'Đã hủy' ? 'selected' : '' ?>>Hủy đơn</option>
+                                <label class="form-label">Chọn trạng thái:</label>
+                                
+                                <select name="trang_thai" class="form-select mb-3" <?= $khoa_form ?>>
+                                    
+                                    <option value="Chờ xác nhận" <?= $selected_cho_xac_nhan ?>>
+                                        Chờ xác nhận
+                                    </option>
+                                    
+                                    <option value="Đang giao hàng" <?= $selected_dang_giao ?>>
+                                        Đang giao hàng
+                                    </option>
+                                    
+                                    <option value="Đã giao" <?= $selected_da_giao ?>>
+                                        Đã giao (Hoàn tất)
+                                    </option>
+                                    
+                                    <option value="Đã hủy" <?= $selected_da_huy ?>>
+                                        Hủy đơn
+                                    </option>
+                                    
                                 </select>
+                                
+                                <?php if ($loi_nhan != ""): ?>
+                                    <div class="alert alert-danger p-2" role="alert">
+                                        <i class="bi bi-exclamation-triangle-fill"></i> <?= $loi_nhan ?>
+                                    </div>
+                                <?php endif; ?>
+                                
                             </div>
-                            <button type="submit" class="btn btn-primary w-100">Cập nhật</button>
+
+                            <button type="submit" class="btn btn-primary w-100" <?= $khoa_form ?>>
+                                Cập nhật
+                            </button>
+                            
                         </form>
                     </div>
                 </div>

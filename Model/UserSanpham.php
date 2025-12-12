@@ -95,7 +95,7 @@ class UserSanpham {
     
     // Lấy toàn bộ bảng màu sắc
     public function getAllMau() { 
-        return pdo_query("SELECT * FROM mau_sac"); 
+        return pdo_query("SELECT * FROM mau_sac WHERE Trangthai = 1"); 
     }
 
     // Lấy toàn bộ bảng kích cỡ

@@ -18,7 +18,7 @@ class ThongKeController {
         $listDoanhThu = $thongKeModel->load_thongke_doanhthu($dateFrom, $dateTo);
 
         // 3. Lấy dữ liệu cho Bảng danh mục và Tổng sản phẩm
-        $listDanhMuc = $thongKeModel->load_thongke_sanpham_danhmuc();
+        $listDanhMuc = $thongKeModel->load_thongke_sanpham_danhmuc($dateFrom, $dateTo);
         
         // 4. Lấy dữ liệu Doanh thu gần đây (Sidebar)
         $listGanDay = $thongKeModel->load_doanhthu_ganday();
