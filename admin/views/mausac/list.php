@@ -32,15 +32,7 @@ include_once("views/layouts/header.php");
                             </td>
                             <td>
                                 <a href="index.php?action=editmausac&id=<?php echo $mau['id_mausac']; ?>" class="btn btn-sm btn-primary">Sửa</a>
-                                <?php if ($mau['Trangthai'] == 1) { ?>
-                                        <a href="index.php?action=deletemausac&id=<?= $mau['id_mausac'] ?>"
-                                        onclick="return confirm('Bạn có muốn xóa không?')" 
-                                        class="btn btn-danger btn-sm">Xóa</a>
-                                    <?php } else { ?>
-                                        <a href="index.php?action=restoremausac&id=<?= $mau['id_mausac'] ?>"
-                                        onclick="return confirm('Bạn có muốn khôi phục không?')" 
-                                        class="btn btn-warning btn-sm">Khôi phục</a>
-                                    <?php } ?>
+                                <a href="index.php?action=deletemausac&id=<?= $mau['id_mausac'] ?>"onclick="return confirm('Bạn có muốn xóa không?')" class="btn btn-danger btn-sm">Xóa</a>
                             </td>
                         </tr>
                     <?php 

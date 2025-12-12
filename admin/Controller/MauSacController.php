@@ -53,13 +53,5 @@ class MauSacController {
             header("Location: index.php?action=listmausac");
         }
     }
-    public function restore() {
-        if(isset($_GET['id'])) {
-            $id = $_GET['id'];
-            $this->model->restore($id);
-            // Khôi phục xong quay lại trang list
-            header("Location:index.php?action=listmausac");
-        }
-    }
 }
 ?>

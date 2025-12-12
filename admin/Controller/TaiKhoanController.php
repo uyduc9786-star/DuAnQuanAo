@@ -25,7 +25,7 @@ class TaiKhoanController {
 
             if(is_array($result)) {
                 // Đăng nhập thành công -> Lưu vào SESSION
-                $_SESSION['admin_login'] = $result; 
+                $_SESSION['admin_login'] = $result;
                 
                 // Chuyển hướng vào trang chính (Dashboard)
                 header("Location: index.php");
